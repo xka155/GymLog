@@ -1,17 +1,20 @@
-#!/bin/sh
-while getopts d option
+#!/bin/bash
+while getopts m: option
 do
  case "${option}"
  in
- d) DEBUG=${OPTARG};;
+ m) MODE=${OPTARG};;
  esac
 done
 
-export FLASK_APP=run.py
+export FLASK_APP=start.py
 
-if $DEBUG
-then
+if [ $MODE == "dev" ]; then
+    export MODE="dev"
     export FLASK_DEBUG=1
+else
+    export FLASK_DEBUG=0
+    export MODE="prod"
 fi
 
 flask run
