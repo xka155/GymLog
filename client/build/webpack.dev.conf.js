@@ -3,10 +3,12 @@ const webpack = require('webpack')
 const config = require('../config')
 const merge = require('webpack-merge')
 const path = require('path')
+const fs = require('fs-extra')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const baseWebpackConfig = require('./webpack.base.conf')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const WebpackOnBuildPlugin = require('on-build-webpack')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -46,6 +48,36 @@ module.exports = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true
     }),
-    new FriendlyErrorsPlugin()
+    new FriendlyErrorsPlugin(),
+    new WebpackOnBuildPlugin(function (stats) {
+      let jsFiles = []
+      let htmlFiles = []
+
+      let jsDir = path.resolve(__dirname, '..', '..', 'app', 'static')
+      let htmlDir = path.resolve(__dirname, '..', '..', 'app', 'templates')
+
+      try {
+        fs.readdir(path.resolve(__dirname, '..', 'dev'), function (err, list) {
+          if (err) {
+            throw err
+          }
+
+          jsFiles = list.filter(utils.filterExtension, {'ext': 'js'})
+          htmlFiles = list.filter(utils.filterExtension, {'ext': 'html'})
+
+          function addPath (file) {
+            return path.resolve(__dirname, '..', 'dev') + '/' + file
+          }
+
+          jsFiles = jsFiles.map(addPath)
+          htmlFiles = htmlFiles.map(addPath)
+
+          utils.copyFilesToDir(jsFiles, jsDir)
+          utils.copyFilesToDir(htmlFiles, htmlDir)
+        })
+      } catch (err) {
+        console.error(err)
+      }
+    })
   ]
 })

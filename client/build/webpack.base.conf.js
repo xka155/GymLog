@@ -12,7 +12,8 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, '..', 'dev')
+    path: path.resolve(__dirname, '..', 'dev'),
+    publicPath: 'static/'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],

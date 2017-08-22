@@ -1,6 +1,7 @@
 var path = require('path')
 var config = require('../config')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
+const fs = require('fs-extra')
 
 exports.assetsPath = function (_path) {
   var assetsSubDirectory = process.env.NODE_ENV === 'production'
@@ -68,4 +69,23 @@ exports.styleLoaders = function (options) {
     })
   }
   return output
+}
+
+exports.filterExtension = function (file) {
+  let fileExtension = path.extname(file)
+  return fileExtension === ('.' + this.ext)
+}
+
+exports.copyFilesToDir = function (files, targetDirectory) {
+  if (targetDirectory.slice(-1) !== '/') {
+    targetDirectory += '/'
+  }
+
+  console.log(targetDirectory)
+  for (let file of files) {
+    let baseFile = path.basename(file)
+    let newFile = targetDirectory + baseFile
+
+    fs.copySync(file, newFile)
+  }
 }
