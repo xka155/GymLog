@@ -26,11 +26,6 @@ let cleanOptions = {
   dry: false
 }
 
-// add hot-reload related code to entry chunks
-Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-  baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
-})
-
 module.exports = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
@@ -40,7 +35,7 @@ module.exports = merge(baseWebpackConfig, {
   // cheap-module-eval-source-map is faster for development
   devtool: 'cheap-module-eval-source-map',
   plugins: [
-    // new webpack.HotModuleReplacementPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new CleanWebpackPlugin(pathsToClean, cleanOptions),
     new HtmlWebpackPlugin({
