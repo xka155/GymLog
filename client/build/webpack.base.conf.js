@@ -1,6 +1,7 @@
 const path = require('path')
 const utils = require('./utils')
 const vueLoaderConfig = require('./vue-loader.conf')
+const config = require('../config')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -12,7 +13,7 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, '..', 'dev'),
+    path: config.dev.out,
     publicPath: 'static/'
   },
   resolve: {
