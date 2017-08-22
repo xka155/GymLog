@@ -80,8 +80,6 @@ exports.copyFilesToDir = function (files, targetDirectory) {
   if (targetDirectory.slice(-1) !== '/') {
     targetDirectory += '/'
   }
-
-  console.log(targetDirectory)
   for (let file of files) {
     let baseFile = path.basename(file)
     let newFile = targetDirectory + baseFile

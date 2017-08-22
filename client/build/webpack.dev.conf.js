@@ -40,7 +40,7 @@ module.exports = merge(baseWebpackConfig, {
   // cheap-module-eval-source-map is faster for development
   devtool: 'cheap-module-eval-source-map',
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new CleanWebpackPlugin(pathsToClean, cleanOptions),
     new HtmlWebpackPlugin({
@@ -51,10 +51,8 @@ module.exports = merge(baseWebpackConfig, {
     new FriendlyErrorsPlugin(),
     new WebpackOnBuildPlugin(function (stats) {
       let jsFiles = []
-      let htmlFiles = []
 
       let jsDir = path.resolve(__dirname, '..', '..', 'app', 'static')
-      let htmlDir = path.resolve(__dirname, '..', '..', 'app', 'templates')
 
       try {
         fs.readdir(path.resolve(__dirname, '..', 'dev'), function (err, list) {
@@ -63,17 +61,14 @@ module.exports = merge(baseWebpackConfig, {
           }
 
           jsFiles = list.filter(utils.filterExtension, {'ext': 'js'})
-          htmlFiles = list.filter(utils.filterExtension, {'ext': 'html'})
 
           function addPath (file) {
             return path.resolve(__dirname, '..', 'dev') + '/' + file
           }
 
           jsFiles = jsFiles.map(addPath)
-          htmlFiles = htmlFiles.map(addPath)
 
           utils.copyFilesToDir(jsFiles, jsDir)
-          utils.copyFilesToDir(htmlFiles, htmlDir)
         })
       } catch (err) {
         console.error(err)

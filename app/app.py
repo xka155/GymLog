@@ -1,4 +1,3 @@
-from .config import TEMPLATE_FOLDER
 from flask import Flask
 from .view.index import index_view
 
