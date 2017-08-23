@@ -1,4 +1,5 @@
 import('../node_modules/vuetify/dist/vuetify.min.css') // Ensure you are using css-loader
+import './assets/icons/icons'
 
 import Vue from 'vue'
 import Vuetify from 'vuetify'
